@@ -15,13 +15,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        $role = Role::query()->first();
+       // $role = Role::query()->first();
 
         User::query()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => "0123456789",
-            "role_id" => $role->id,
-        ]);
+            'name' => 'Administrator',
+            'email' => 'admin@root.com',
+            'password' => "admin123",
+            'role' => 'ADMIN'
+            ]);
     }
 }

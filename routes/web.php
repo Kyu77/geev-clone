@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
      return view('welcome');
-})->name("home");
+})->name("home")->middleware("auth");
 
 Route::get('/product/creer', [ProductController::class, 'create'])->name('product.create')->middleware("auth");
 Route::post('/product/creer', [ProductController::class, 'store'])->middleware("auth");

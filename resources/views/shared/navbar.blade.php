@@ -37,4 +37,4 @@
       <div class="d-flex align-items-center justify-content-between">
       <a href="{{route('product.create')}}" class="btn btn-warning">Donner un objet</a>
     </div>
-      @endauth
+@endauth
