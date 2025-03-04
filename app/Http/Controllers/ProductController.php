@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
@@ -11,6 +12,7 @@ use Illuminate\Container\Attributes\Auth as AttributesAuth;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateProductRequest;
 use App\Models\Product;
+use App\Models\Quality;
 
 class ProductController extends Controller
 {
@@ -19,11 +21,15 @@ class ProductController extends Controller
     }
 
     public function create(){
-        return view('create');
+        $categories = Category::all();
+        $qualities = Quality::all();
+        return view('create',compact("categories", "qualities"));
+
     }
 
     public function store(CreateProductRequest $request){
-        $path =  $request->file('images')->store('product','public');
+
+        $path =  $request->file('image')->store('product','public');
         $product =  $request->validated();
         $product['images'] = $path;
         $product['user_id'] = Auth::user()->id;

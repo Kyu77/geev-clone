@@ -10,6 +10,17 @@
     <x-input name="title" label="Nom de l'objet" value="{{old('title')}}"/>
     <x-input name="image" label="Image" type="file"  value="{{old('image')}}"/>
     <x-input name="description" label="Description" type="textarea" value="{{old('description')}}"/>
+    <select class="select" name="category_id">
+        @foreach($categories as $category)
+            <option value="{{ $category->id }}">{{ $category->name }}</option>
+        @endforeach
+    </select>
+
+    <select class="select" name="quality_id">
+        @foreach($qualities as $quality)
+            <option value="{{ $quality->id }}">{{ $quality->name }}</option>
+        @endforeach
+    </select>
 
     <button class="btn btn-info">Créer</button>
 
