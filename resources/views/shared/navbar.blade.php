@@ -34,7 +34,7 @@
   </div>
 
   @auth
-      <div class="d-flex align-items-center justify-content-between">
-      <a href="{{route('product.create')}}" class="btn btn-warning">Donner un objet</a>
+      <div style="margin: 1rem; width: 150px;">
+      <a href="{{route('product.create')}}" class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl">Donner un objet</a>
     </div>
 @endauth

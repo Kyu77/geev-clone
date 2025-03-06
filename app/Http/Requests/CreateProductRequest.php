@@ -26,7 +26,8 @@ class CreateProductRequest extends FormRequest
             'description'=>['required','min:3'],
             'image'=>['required','image'],
             'category_id' => ['required','numeric'],
-            'quality_id' => ['required','numeric']
+            'quality_id' => ['required','numeric'],
+            'statut_id' => ['required','numeric']
         ];
     }
 }

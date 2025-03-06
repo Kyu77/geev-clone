@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Address;
 use App\Models\Category;
 use App\Models\Quality;
 use App\Models\Statut;
@@ -24,8 +23,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Category::class);
             $table->foreignIdFor(Quality::class);
-            $table->foreignIdFor(Address::class);
             $table->foreignIdFor(Statut::class);
+            $table->enum('statut', ['Disponible', 'Indisponible'])->default("Disponible");
 
 
             $table->timestamps();

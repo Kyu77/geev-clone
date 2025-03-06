@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\Category;
+use App\Models\Statut;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
@@ -23,7 +24,9 @@ class ProductController extends Controller
     public function create(){
         $categories = Category::all();
         $qualities = Quality::all();
-        return view('create',compact("categories", "qualities"));
+        $statuts = Statut::all();
+
+        return view('create',compact("categories", "qualities", "statuts"));
 
     }
 
@@ -34,6 +37,8 @@ class ProductController extends Controller
         $product['images'] = $path;
         $product['user_id'] = Auth::user()->id;
         Product::query()->create($product);
-        return redirect()->route('home')->with('ok', 'Le produit à bien été ajouté !');
+        return  redirect()->route('home')->with('ok', 'Le produit à bien été ajouté !');
+
+
 }
 }
