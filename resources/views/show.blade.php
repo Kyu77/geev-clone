@@ -22,9 +22,10 @@
       <p>{{$product->description}}</p>
       <div class="card-actions justify-end" style="justify-content: space-between">
          <h2> {{$product->user->name}}</h2>
-        <a class="btn btn-primary" href="{{route('product.show',$product)}}" >Modifier</a>
-        <form action="" method="post">
+        <a class="btn btn-primary" href="{{route('product.edit',$product)}}" >Modifier</a>
+        <form onsubmit="return confirm('etes vous sur de vouloir supprimer ce bien')" action="{{route('product.destroy', $product )}}" method="post">
             @csrf
+            @method('DELETE')
             <button class="btn btn-danger">Supprimer</button>
 
         </form>

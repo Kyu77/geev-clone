@@ -9,6 +9,9 @@ Route::get('/', [ProductController::class, "index"])->name("home");
 Route::get('/product/creer', [ProductController::class, 'create'])->name('product.create')->middleware("auth");
 Route::post('/product/creer', [ProductController::class, 'store'])->middleware("auth");
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit')->middleware("auth");
+Route::put('/product/{product}/edit', [ProductController::class, 'update'])->name('product.update')->middleware("auth");
+Route::delete('/product/{product}/destroy', [ProductController::class, 'destroy'])->name('product.destroy')->middleware("auth");
 //**auth */
 Route::get("/register", [AuthController::class, 'showRegister'])->name('register')->middleware("guest");
 Route::post("/register", [AuthController::class, 'register'])->middleware("guest");

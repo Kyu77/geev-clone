@@ -1,0 +1,29 @@
+setup
+policies authorization edit, update, destroy
+
+can cannot
+
+
+// *** Administation
+
+// *** Listing des users (data table , paginer)
+// *** Listings des produits (data table, paginer)
+
+
+// *** interface users
+recherche par categories
+// rechereche par nom du produit input
+filtre par quality
+
+
+
+
+// *** gerer ton frontend
+
+
+// *** ecriture d'un fichier read me
+
+
+
+
+
