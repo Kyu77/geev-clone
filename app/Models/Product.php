@@ -20,4 +20,8 @@ class Product extends Model
         'statut_id',
 
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

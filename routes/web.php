@@ -4,12 +4,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-     return view('welcome');
-})->name("home")->middleware("auth");
+Route::get('/', [ProductController::class, "index"])->name("home");
 
 Route::get('/product/creer', [ProductController::class, 'create'])->name('product.create')->middleware("auth");
 Route::post('/product/creer', [ProductController::class, 'store'])->middleware("auth");
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 //**auth */
 Route::get("/register", [AuthController::class, 'showRegister'])->name('register')->middleware("guest");
 Route::post("/register", [AuthController::class, 'register'])->middleware("guest");

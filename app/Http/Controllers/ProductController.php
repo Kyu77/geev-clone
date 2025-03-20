@@ -14,11 +14,20 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateProductRequest;
 use App\Models\Product;
 use App\Models\Quality;
+use App\Models\Post;
 
 class ProductController extends Controller
 {
     public function index() {
-        return view("home");
+      $products = Product::query()->with('user')->orderBy('created_at','desc')->paginate(6);
+
+      return view('welcome', compact('products'));
+    }
+
+    public function show(Product $product){
+        $product = $product->load('user');
+        return view('show', compact('product'));
+
     }
 
     public function create(){
