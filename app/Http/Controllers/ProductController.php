@@ -15,17 +15,27 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateProductRequest;
 use App\Models\Product;
 use App\Models\Quality;
-use App\Models\Post;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Auth\Access\Response;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
+        $categories = Category::all();
+        $categoryId = $request->query('category');
+
+        $products = Product::when($categoryId, function ($query) use ($categoryId) {
+            return $query->where('category_id', $categoryId);
+        })->get();
+
+
+
         $products = Product::query()->with('user')->orderBy('created_at', 'desc')->paginate(6);
 
-        return view('welcome', compact('products'));
+        return view('welcome', compact('products','categories', 'categoryId'));
     }
 
     public function show(Product $product)
@@ -55,7 +65,12 @@ class ProductController extends Controller
     }
 
 
-    public function edit(Product $product) {
+    public function edit(Request $request, Product $product) {
+
+        if ($request->user()->cannot('update', $product)) {
+            abort(403);
+        }
+
         $categories = Category::all();
         $qualities = Quality::all();
         $statuts = Statut::all();
@@ -65,6 +80,10 @@ class ProductController extends Controller
 
     public function update( UpdateProductRequest  $request, Product $product) {
 
+
+        if ($request->user()->cannot('update', $product)) {
+            abort(403);
+        }
 
         $updatedProduct = $request->validated();
 
@@ -83,7 +102,12 @@ class ProductController extends Controller
     }
 
 
-    public function destroy(Product $product) {
+    public function destroy(Request $request, Product $product) {
+
+        if ($request->user()->cannot('delete', $product)) {
+            abort(403);
+        }
+
         // supprime lancien image du disk public
         Storage::disk('public')->delete($product->images);
         $product->delete();
