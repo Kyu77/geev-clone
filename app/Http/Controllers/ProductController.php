@@ -27,13 +27,13 @@ class ProductController extends Controller
         $categories = Category::all();
         $categoryId = $request->query('category');
 
-        $products = Product::when($categoryId, function ($query) use ($categoryId) {
-            return $query->where('category_id', $categoryId);
-        })->get();
-
-
-
-        $products = Product::query()->with('user')->orderBy('created_at', 'desc')->paginate(6);
+        $products = Product::query()
+            ->when($categoryId, function ($query) use ($categoryId) {
+                return $query->where('category_id', $categoryId);
+            })
+            ->with(['user', 'category'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(6);
 
         return view('welcome', compact('products','categories', 'categoryId'));
     }
@@ -97,7 +97,7 @@ class ProductController extends Controller
 
         // update the product in the database
          $product->update($updatedProduct);
-        return  redirect()->route('home')->with('ok', 'Le produit à bien été mod');
+        return  redirect()->route('home')->with('ok', 'Le produit à bien été modifié');
 
     }
 

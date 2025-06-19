@@ -12,10 +12,10 @@
 <div class="dropdown dropdown-center">
     <div tabindex="0" role="button" class="btn m-1">Catégories</div>
     <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm" style="z-index: 5">
-        <li><a href="{{ $products }}">Toutes les catégories</a></li>
+        <li><a href="{{ route('home') }}">Toutes les catégories</a></li>
         @foreach($categories as $category)
             <li>
-                <a href="{{ $products, ['category' => $category->id] }}"
+                <a href="{{ route('home', ['category' => $category->id]) }}"
                    class="{{ request('category') == $category->id ? 'font-bold' : '' }}">
                     {{ $category->name }}
                 </a>
@@ -24,15 +24,10 @@
     </ul>
 </div>
 
-  <div class="dropdown dropdown-center">
-    <div tabindex="0" role="button" class="btn m-1">Catégories</div>
-    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm" style="z-index: 5">
-      <li><a>Item gre</a></li>
-      <li><a>Item 2</a></li>
-    </ul>
-  </div>
+
 
 <ul class="flex flex-wrap" style="justify-content: center;">
+
     @foreach ($products as $product )
 <li style="margin:0.5rem">
 <div class="card bg-base-100 w-96 shadow-sm">
@@ -45,6 +40,8 @@
       <p>{{$product->description}}</p>
       <div class="card-actions justify-end" style="justify-content: space-between">
          <h2> {{$product->user->name}}</h2>
+         <h2> {{$product->category->name}}</h2>
+
         <a class="btn btn-primary" href="{{route('product.show',$product)}}" >Voir plus</a>
       </div>
     </div>

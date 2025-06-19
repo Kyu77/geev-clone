@@ -1,6 +1,6 @@
 <div class="navbar bg-base-100">
     <div class="flex-1">
-      <a href="{{route('home')}}" class="btn btn-ghost text-xl">Geev</a>
+      <a href="{{route('home')}}" class="btn btn-ghost text-xl">ReDon</a>
     </div>
     <div class="flex-none">
       <div class="dropdown dropdown-end">

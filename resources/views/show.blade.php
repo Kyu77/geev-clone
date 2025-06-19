@@ -21,6 +21,8 @@
                 <p>{{ $product->description }}</p>
                 <div class="card-actions justify-end" style="justify-content: space-between">
                     <h2> {{ $product->user->name }}</h2>
+                    <h2> {{$product->category->name}}</h2>
+
 
                     @can('update',$product)
 
@@ -35,6 +37,7 @@
                     </form>
                      @endcan
                 </div>
+                <button>    <a href=""></a>Retour</button>
             </div>
         </div>
 
