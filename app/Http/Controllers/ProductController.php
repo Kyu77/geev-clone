@@ -24,7 +24,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
 
-        $categories = Category::all();
+        $categories = Category::withCount('products')->get();
         $categoryId = $request->query('category');
 
         $products = Product::query()
@@ -35,11 +35,14 @@ class ProductController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(6);
 
-        return view('welcome', compact('products','categories', 'categoryId'));
+        $userCount = User::count();
+
+        return view('welcome', compact('products','categories', 'categoryId', 'userCount'));
     }
 
     public function show(Product $product)
     {
+        $product->increment('view_count');
         $product = $product->load('user');
         return view('show', compact('product'));
     }

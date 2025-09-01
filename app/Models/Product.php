@@ -18,6 +18,7 @@ class Product extends Model
         'category_id',
         'quality_id',
         'statut_id',
+        'view_count',
 
     ];
 

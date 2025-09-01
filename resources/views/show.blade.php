@@ -2,15 +2,10 @@
 
 @section('title', 'Détail du produit')
 
-
 @section('body')
-
 
     <div class="text-center">
         <h1 style="margin:1rem">Détail du produit</h1>
-
-
-
 
         <div class="card bg-base-100 w-96 shadow-sm">
             <figure>
@@ -22,26 +17,21 @@
                 <div class="card-actions justify-end" style="justify-content: space-between">
                     <h2> {{ $product->user->name }}</h2>
                     <h2> {{$product->category->name}}</h2>
-
+                    <h2>Nombre de consultations : {{ $product->view_count }}</h2>
 
                     @can('update',$product)
-
-
                     <a class="btn btn-primary" href="{{ route('product.edit', $product) }}">Modifier</a>
                     <form onsubmit="return confirm('etes vous sur de vouloir supprimer ce bien')"
                         action="{{ route('product.destroy', $product) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger">Supprimer</button>
-
                     </form>
-                     @endcan
+                    @endcan
                 </div>
-                <button>    <a href=""></a>Retour</button>
+                
             </div>
         </div>
-
-
 
     </div>
 @endsection
