@@ -31,4 +31,12 @@ class Product extends Model
     public function category() {
         return $this->belongsTo(Category::class);
     }
+
+    public function statut() {
+        return $this->belongsTo(Statut::class);
+    }
+
+    public function quality() {
+        return $this->belongsTo(Quality::class);
+    }
 }

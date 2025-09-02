@@ -38,9 +38,21 @@
 
 <div class="text-center" style="margin: 2rem">
     <button type="submit" class="btn btn-info">Créer votre produit</button>
-    
-</div>
+   
+</div> 
+
+
+
 
 </form>
+<div class="text-center" style="margin: 2rem" id="back-button-container">
+    <a href="{{route('home')}}" onclick="return isFormEmpty()">
+    <button type="button" class="btn">
+        Retour
+    </button>
+    </a>
 </div>
+</div>
+
+
 @endsection

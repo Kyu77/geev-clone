@@ -25,19 +25,32 @@ class ProductController extends Controller
     {
 
         $categories = Category::withCount('products')->get();
-        $categoryId = $request->query('category');
+        $statuts = Statut::all();
+        $qualities = Quality::all();
+        $categoryIds = $request->query('category', []);
+        if (!is_array($categoryIds)) $categoryIds = $categoryIds ? [$categoryIds] : [];
+        $statutIds = $request->query('statut', []);
+        if (!is_array($statutIds)) $statutIds = $statutIds ? [$statutIds] : [];
+        $qualityIds = $request->query('quality', []);
+        if (!is_array($qualityIds)) $qualityIds = $qualityIds ? [$qualityIds] : [];
 
         $products = Product::query()
-            ->when($categoryId, function ($query) use ($categoryId) {
-                return $query->where('category_id', $categoryId);
+            ->when(!empty($categoryIds), function ($query) use ($categoryIds) {
+                return $query->whereIn('category_id', $categoryIds);
             })
-            ->with(['user', 'category'])
+            ->when(!empty($statutIds), function ($query) use ($statutIds) {
+                return $query->whereIn('statut_id', $statutIds);
+            })
+            ->when(!empty($qualityIds), function ($query) use ($qualityIds) {
+                return $query->whereIn('quality_id', $qualityIds);
+            })
+            ->with(['user', 'category', 'statut', 'quality'])
             ->orderBy('created_at', 'desc')
             ->paginate(6);
 
         $userCount = User::count();
 
-        return view('welcome', compact('products','categories', 'categoryId', 'userCount'));
+        return view('welcome', compact('products','categories', 'categoryIds', 'userCount', 'statuts', 'statutIds', 'qualities', 'qualityIds'));
     }
 
     public function show(Product $product)
@@ -61,6 +74,7 @@ class ProductController extends Controller
 
         $path =  $request->file('image')->store('product', 'public');
         $product =  $request->validated();
+        // Store image path as string, not JSON
         $product['images'] = $path;
         $product['user_id'] = Auth::user()->id;
         Product::query()->create($product);
@@ -92,6 +106,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $path =  $request->file('image')->store('product', 'public');
+            // Store image path as string, not JSON
             $updatedProduct['images'] = $path;
             // supprime lancien image du disk public
             Storage::disk('public')->delete($product->images);
