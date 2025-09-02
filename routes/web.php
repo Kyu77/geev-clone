@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, "index"])->name("home");
@@ -19,6 +20,8 @@ Route::get("/login", [AuthController::class, 'showLogin'])->name('login')->middl
 Route::post("/login", [AuthController::class, 'login'])->middleware("guest");
 
 Route::delete('/deconnexion',[AuthController::class,'logout'])->name('auth.logout')->middleware("auth");
+
+Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 
 
 

@@ -48,6 +48,13 @@ class ProductController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(6);
 
+        // Fix statut attribute to be the related Statut object, not string
+        foreach ($products as $product) {
+            if (is_string($product->statut)) {
+                $product->statut = $product->statut()->first();
+            }
+        }
+
         $userCount = User::count();
 
         return view('welcome', compact('products','categories', 'categoryIds', 'userCount', 'statuts', 'statutIds', 'qualities', 'qualityIds'));
@@ -56,7 +63,13 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product->increment('view_count');
-        $product = $product->load('user');
+        $product = $product->load('user', 'category', 'statut', 'quality');
+
+        // Fix statut attribute to be the related Statut object, not string
+        if (is_string($product->statut)) {
+            $product->statut = $product->statut()->first();
+        }
+
         return view('show', compact('product'));
     }
 
@@ -65,6 +78,7 @@ class ProductController extends Controller
         $categories = Category::all();
         $qualities = Quality::all();
         $statuts = Statut::all();
+
 
         return view('create', compact("categories", "qualities", "statuts"));
     }

@@ -19,12 +19,16 @@
                     <li><a href="{{route('login')}}">Connexion</a></li>
             @endguest
             @auth
-                            <li><a>Profil</a></li>
+              <li>
+                <a href="{{ route('profile') }}" class="btn btn-info w-full justify-center">
+                    👤 Profil
+                </a>
+            </li>
 
                 <form action="{{route('auth.logout')}}" method="post">
                 @csrf
                 @method('delete')
-                <button class="btn btn-info">Deconnexion</button>
+                <button class="btn btn-error w-full justify-center">🚪 Déconnexion</button>
                 </form>
             @endauth
 

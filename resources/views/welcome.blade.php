@@ -7,7 +7,7 @@
 
 
 <div class="text-center">
-<h1 style="margin:1rem">Page d'accueil</h1>
+<h1 class="text-2xl font-bold my-6">Page d'accueil</h1>
 <!--
 <p>Total utilisateurs enregistrés : {{$userCount}}</p>
 -->
@@ -147,7 +147,10 @@
           <span class="text-sm font-semibold text-indigo-600">
            ⭐{{ $product->quality->name }}
           </span>
-          
+          <span class="text-sm font-semibold text-indigo-600">
+           {{ $product->statut->name == 'Disponible' ? '🟢' : '🔴' }}
+          </span>
+
           <a href="{{ route('product.show', $product) }}" class="btn btn-sm btn-primary">
             Voir plus
           </a>

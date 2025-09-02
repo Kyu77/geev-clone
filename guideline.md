@@ -57,10 +57,4 @@ Tests et débogage
 Déploiement sur un serveur
 Ce brief vous donne une base solide pour commencer votre projet. N'hésitez pas à adapter les fonctionnalités selon vos besoins spécifiques et à ajouter d'autres éléments qui pourraient améliorer l'expérience utilisateur.
 
-
-
-ajouter dans les cards l'indication de disponibiltés ( j'avais pensée aux emoji rouge ou vert)
-
-Améliorer page de détail d'un produit
-
 Commencer partie profil 

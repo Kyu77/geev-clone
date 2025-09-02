@@ -19,6 +19,7 @@ class Product extends Model
         'quality_id',
         'statut_id',
         'view_count',
+        'statut', // add this to fillable to avoid conflict with enum column
 
     ];
 
