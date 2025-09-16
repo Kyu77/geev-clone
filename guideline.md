@@ -2,16 +2,16 @@ Créer un clone de Geev avec Laravel est un projet intéressant qui peut inclure
 
 Brief du Projet : Clone de Geev
 1. Fonctionnalités Utilisateur
-Inscription et Connexion
-Formulaire d'inscription avec validation (nom, email, mot de passe).
-Connexion avec email et mot de passe.
+Inscription et Connexion  ✅
+Formulaire d'inscription avec validation (nom, email, mot de passe). ✅
+Connexion avec email et mot de passe.✅
 Réinitialisation de mot de passe.
-Profil Utilisateur
-Page de profil avec informations personnelles (nom, photo, bio).
-Option de modifier les informations du profil.
+Profil Utilisateur✅
+Page de profil avec informations personnelles (nom, photo, bio).✅
+Option de modifier les informations du profil.✅
 Historique des dons et des demandes.
-Création d'Annonces
-Formulaire pour créer une annonce (titre, description, catégorie, photos).
+Création d'Annonces✅
+Formulaire pour créer une annonce (titre, description, catégorie, photos).✅
 Option de définir la localisation de l'objet.
 Choix entre "don" ou "demande".
 Recherche et Filtrage

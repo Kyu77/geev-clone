@@ -23,6 +23,15 @@ Route::delete('/deconnexion',[AuthController::class,'logout'])->name('auth.logou
 
 Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 
+Route::get('/profile/edit', [UserController::class, 'edit'])->name('profile.edit')->middleware('auth');
+Route::put('/profile/edit', [UserController::class, 'update'])->name('profile.update')->middleware('auth');
+
+// Password reset routes
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request')->middleware('guest');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email')->middleware('guest');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset')->middleware('guest');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update')->middleware('guest');
+
 
 
 

@@ -6,14 +6,14 @@
 <div class="card card-side bg-base-100 shadow-sm">
   <figure>
     <img
-      src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-      alt="Movie" />
+      src="{{ $user->avatar ? asset('storage/' . $user->avatar) : 'https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp' }}"
+      alt="Profile" />
   </figure>
   <div class="card-body">
     <h2 class="card-title">{{ auth()->user()->name }}</h2>
     <p>{{ auth()->user()->email }}</p>
     <div class="card-actions justify-end">
-      <button class="btn btn-primary">Modifier</button>
+      <a href="{{ route('profile.edit') }}" class="btn btn-primary">Modifier</a>
     </div>
   </div>
 </div>

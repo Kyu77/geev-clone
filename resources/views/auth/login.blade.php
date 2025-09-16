@@ -21,4 +21,8 @@
                 <button type="submit" class="btn btn-primary my-4">Connexion</button>
 
             </form>
+
+            <div class="text-center">
+                <a href="{{ route('password.request') }}">Mot de passe oublié ?</a>
+            </div>
 @endsection
