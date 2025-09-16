@@ -5,7 +5,7 @@ Brief du Projet : Clone de Geev
 Inscription et Connexion  ✅
 Formulaire d'inscription avec validation (nom, email, mot de passe). ✅
 Connexion avec email et mot de passe.✅
-Réinitialisation de mot de passe.
+Réinitialisation de mot de passe.✅
 Profil Utilisateur✅
 Page de profil avec informations personnelles (nom, photo, bio).✅
 Option de modifier les informations du profil.✅

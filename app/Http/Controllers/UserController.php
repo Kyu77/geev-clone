@@ -29,6 +29,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'avatar' => ['nullable', 'image', 'max:2048'], // max 2MB
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
         if ($request->hasFile('avatar')) {
@@ -37,6 +38,12 @@ class UserController extends Controller
             }
             $path = $request->file('avatar')->store('avatars', 'public');
             $validated['avatar'] = $path;
+        }
+
+        if ($request->filled('password')) {
+            $validated['password'] = bcrypt($request->password);
+        } else {
+            unset($validated['password']);
         }
 
         $user->update($validated);

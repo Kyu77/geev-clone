@@ -46,6 +46,24 @@
                 @enderror
             </div>
 
+            <div class="mb-4">
+                <label for="password" class="block text-sm font-medium text-gray-700">Nouveau mot de passe</label>
+                <div class="relative">
+                    <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" autocomplete="new-password">
+                    <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-full text-sm cursor-pointer">
+                        👁️
+                    </button>
+                </div>
+                @error('password')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+                <input type="password" id="password_confirmation" name="password_confirmation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" autocomplete="new-password">
+            </div>
+
             <div class="flex items-center justify-between">
                 <a href="{{ route('profile') }}" class="text-sm text-indigo-600 hover:text-indigo-500">Annuler</a>
                 <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

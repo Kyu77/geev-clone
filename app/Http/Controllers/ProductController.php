@@ -87,11 +87,12 @@ class ProductController extends Controller
     {
 
         $path =  $request->file('image')->store('product', 'public');
-        $product =  $request->validated();
-        // Store image path as string, not JSON
-        $product['images'] = $path;
-        $product['user_id'] = Auth::user()->id;
-        Product::query()->create($product);
+        $product = $request->validated();
+        $product['user_id'] = Auth::id();
+        $product['images'] = $path ?? null;
+
+        Product::create($product);
+
         return  redirect()->route('home')->with('ok', 'Le produit à bien été ajouté !');
     }
 
@@ -116,19 +117,15 @@ class ProductController extends Controller
             abort(403);
         }
 
-        $updatedProduct = $request->validated();
+       $updatedProduct = $request->validated();
 
-        if ($request->hasFile('image')) {
-            $path =  $request->file('image')->store('product', 'public');
-            // Store image path as string, not JSON
-            $updatedProduct['images'] = $path;
-            // supprime lancien image du disk public
-            Storage::disk('public')->delete($product->images);
-        }
+    if ($request->hasFile('image')) {
+        $path =  $request->file('image')->store('product', 'public');
+        Storage::disk('public')->delete($product->images);
+        $updatedProduct['images'] = $path;
+    }
 
-
-        // update the product in the database
-         $product->update($updatedProduct);
+$product->update($updatedProduct);
         return  redirect()->route('home')->with('ok', 'Le produit à bien été modifié');
 
     }

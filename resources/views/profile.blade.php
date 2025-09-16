@@ -4,11 +4,14 @@
 
 @section('body')
 <div class="card card-side bg-base-100 shadow-sm">
-  <figure>
-    <img
-      src="{{ $user->avatar ? asset('storage/' . $user->avatar) : 'https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp' }}"
-      alt="Profile" />
-  </figure>
+ <figure class="h-40 w-40 rounded-full overflow-hidden bg-gray-200">
+  <img
+    src="{{ $user->avatar ? asset('storage/' . $user->avatar) : 'https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp' }}"
+    alt="Profile"
+    class="h-full w-full object-cover"
+  />
+</figure>
+
   <div class="card-body">
     <h2 class="card-title">{{ auth()->user()->name }}</h2>
     <p>{{ auth()->user()->email }}</p>
