@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Location Search</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-group { margin: 10px 0; }
+        input { padding: 8px; width: 300px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Test de la recherche de localisation</h1>
+
+    <div class="form-group">
+        <label for="location_search">Ville / Code postal:</label>
+        <input type="text"
+               name="location_search"
+               id="location_search"
+               placeholder="Ex: Paris, 75000, Lyon..."
+               autocomplete="off">
+        <div id="location_error" class="error" style="display: none;"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" readonly>
+    </div>
+
+    <div class="form-group">
+        <button onclick="testLocationSearch()">Tester la recherche</button>
+        <button onclick="clearForm()">Effacer</button>
+    </div>
+
+    <div id="debug" style="margin-top: 20px; padding: 10px; background: #f0f0f0;">
+        <h3>Debug Console:</h3>
+        <div id="debug-content"></div>
+    </div>
+
+    <script>
+        // Location search functionality using Nominatim API
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Location search script loaded successfully');
+
+            const locationInput = document.getElementById('location_search');
+            const latitudeInput = document.getElementById('latitude');
+            const longitudeInput = document.getElementById('longitude');
+            const errorElement = document.getElementById('location_error');
+
+            // Rate limiting: prevent API calls more frequently than once per 500ms
+            let lastApiCall = 0;
+            const API_DELAY = 500;
+
+            // Handle input events
+            locationInput.addEventListener('blur', function() {
+                handleLocationSearch(this.value);
+            });
+
+            locationInput.addEventListener('change', function() {
+                handleLocationSearch(this.value);
+            });
+
+            // Add input event for real-time search
+            locationInput.addEventListener('input', function() {
+                // Debounce input to avoid too many API calls
+                clearTimeout(this.searchTimeout);
+                this.searchTimeout = setTimeout(() => {
+                    if (this.value.length >= 3) {
+                        handleLocationSearch(this.value);
+                    }
+                }, 300);
+            });
+
+            function handleLocationSearch(query) {
+                if (!query.trim()) {
+                    clearLocation();
+                    return;
+                }
+
+                // Rate limiting
+                const now = Date.now();
+                if (now - lastApiCall < API_DELAY) {
+                    setTimeout(() => {
+                        handleLocationSearch(query);
+                    }, API_DELAY - (now - lastApiCall));
+                    return;
+                }
+
+                lastApiCall = now;
+
+                // Show loading state
+                locationInput.disabled = true;
+                locationInput.placeholder = 'Recherche en cours...';
+                hideError();
+
+                console.log('Searching for:', query);
+                addDebugMessage('Searching for: ' + query);
+
+                // Call Nominatim API
+                searchLocation(query);
+            }
+
+            function searchLocation(query) {
+                // Add country restriction for better results in France
+                const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1&countrycodes=FR`;
+
+                console.log('API URL:', url);
+                addDebugMessage('API URL: ' + url);
+
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'User-Agent': 'GeevClone/1.0'
+                    }
+                })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    addDebugMessage('Response status: ' + response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('API Response:', data);
+                    addDebugMessage('API Response: ' + JSON.stringify(data, null, 2));
+
+                    locationInput.disabled = false;
+                    locationInput.placeholder = 'Ex: Paris, 75000, Lyon...';
+
+                    if (data && data.length > 0) {
+                        // Find the best result (prefer city/town over other types)
+                        let bestResult = data[0];
+                        for (let result of data) {
+                            if (result.type === 'city' || result.type === 'town' || result.type === 'village') {
+                                bestResult = result;
+                                break;
+                            }
+                        }
+
+                        latitudeInput.value = bestResult.lat;
+                        longitudeInput.value = bestResult.lon;
+
+                        // Update input with found location for better UX
+                        const cityName = bestResult.address?.city || bestResult.address?.town || bestResult.address?.village || bestResult.display_name.split(',')[0];
+                        locationInput.value = cityName;
+
+                        console.log('Location found:', cityName, bestResult.lat, bestResult.lon);
+                        addDebugMessage('Location found: ' + cityName + ' (' + bestResult.lat + ', ' + bestResult.lon + ')');
+                        hideError();
+                    } else {
+                        console.log('No results found for:', query);
+                        addDebugMessage('No results found for: ' + query);
+                        showError('Ville introuvable. Vérifiez l\'orthographe ou essayez un code postal.');
+                        clearLocation();
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la recherche:', error);
+                    addDebugMessage('Error: ' + error.message);
+                    locationInput.disabled = false;
+                    locationInput.placeholder = 'Ex: Paris, 75000, Lyon...';
+                    showError('Erreur de connexion. Vérifiez votre connexion internet et réessayez.');
+                    clearLocation();
+                });
+            }
+
+            function showError(message) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                console.log('Error displayed:', message);
+                addDebugMessage('Error displayed: ' + message);
+            }
+
+            function hideError() {
+                errorElement.style.display = 'none';
+            }
+
+            function clearLocation() {
+                latitudeInput.value = '';
+                longitudeInput.value = '';
+                hideError();
+            }
+
+            function addDebugMessage(message) {
+                const debugContent = document.getElementById('debug-content');
+                const timestamp = new Date().toLocaleTimeString();
+                debugContent.innerHTML += '<div>[' + timestamp + '] ' + message + '</div>';
+                debugContent.scrollTop = debugContent.scrollHeight;
+            }
+
+            // Make functions global for button clicks
+            window.testLocationSearch = function() {
+                handleLocationSearch(locationInput.value);
+            };
+
+            window.clearForm = function() {
+                locationInput.value = '';
+                latitudeInput.value = '';
+                longitudeInput.value = '';
+                hideError();
+                document.getElementById('debug-content').innerHTML = '';
+            };
+        });
+    </script>
+</body>
+</html>

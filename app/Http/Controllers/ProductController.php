@@ -91,6 +91,11 @@ class ProductController extends Controller
         $product['user_id'] = Auth::id();
         $product['images'] = $path ?? null;
 
+        // Handle location: store the location_search value in the location field
+        if ($request->has('location_search')) {
+            $product['location'] = $request->input('location_search');
+        }
+
         Product::create($product);
 
         return  redirect()->route('home')->with('ok', 'Le produit à bien été ajouté !');
@@ -118,6 +123,11 @@ class ProductController extends Controller
         }
 
        $updatedProduct = $request->validated();
+
+       // Handle location: store the location_search value in the location field
+       if ($request->has('location_search')) {
+           $updatedProduct['location'] = $request->input('location_search');
+       }
 
     if ($request->hasFile('image')) {
         $path =  $request->file('image')->store('product', 'public');

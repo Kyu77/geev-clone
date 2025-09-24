@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <title>@yield('title')</title>
 </head>
 
@@ -27,7 +29,7 @@
 
  @endif
 
- @vite(['resources/js/app.js'])
+ @vite(['resources/js/app.js', 'resources/js/map.js', 'resources/js/location-search.js'])
 
 </body>
 

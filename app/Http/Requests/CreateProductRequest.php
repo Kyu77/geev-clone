@@ -27,7 +27,11 @@ class CreateProductRequest extends FormRequest
             'image'=>['required','image'],
             'category_id' => ['required','numeric'],
             'quality_id' => ['required','numeric'],
-            'statut_id' => ['required','numeric']
+            'statut_id' => ['required','numeric'],
+            'location_search' => ['nullable', 'string', 'max:255'],
+            'location' => ['nullable', 'string', 'max:255'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180']
         ];
     }
 }

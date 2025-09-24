@@ -19,10 +19,10 @@ class Product extends Model
         'quality_id',
         'statut_id',
         'view_count',
-        'statut', 
+        'statut',
         'latitude',
         'longitude',// add this to fillable to avoid conflict with enum column
-
+        'location',
     ];
 
     public function user(){
@@ -41,5 +41,25 @@ class Product extends Model
 
     public function quality() {
         return $this->belongsTo(Quality::class);
+    }
+
+    /**
+     * Get the location name for display purposes
+     */
+    public function getLocationAttribute()
+    {
+        // If location is already stored, return it
+        if (!empty($this->attributes['location'])) {
+            return $this->attributes['location'];
+        }
+
+        // If we have coordinates but no location name, try to get it from coordinates
+        if ($this->latitude && $this->longitude) {
+            // This is a simple fallback - in a real app you might want to cache this
+            // or use a geocoding service to get the city name from coordinates
+            return "Localisation: {$this->latitude}, {$this->longitude}";
+        }
+
+        return null;
     }
 }

@@ -37,16 +37,22 @@
             </select>
         </div>
 
-        {{-- Latitude / Longitude --}}
+        {{-- Ville / Code postal --}}
         <div class="my-2">
-            <label for="latitude" class="block text-sm font-medium text-gray-700">Latitude</label>
-            <input type="text" name="latitude" id="latitude" value="{{ $product->latitude }}" class="mt-1 w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500">
+            <label for="location_search" class="block text-sm font-medium text-gray-700">Ville / Code postal</label>
+            <input type="text"
+                   name="location_search"
+                   id="location_search"
+                   placeholder="Ex: Paris, 75000, Lyon..."
+                   value="{{ $product->location ?? '' }}"
+                   class="mt-1 w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500"
+                   autocomplete="off">
+            <div id="location_error" class="mt-1 text-sm text-red-600 hidden"></div>
         </div>
 
-        <div class="my-2">
-            <label for="longitude" class="block text-sm font-medium text-gray-700">Longitude</label>
-            <input type="text" name="longitude" id="longitude" value="{{ $product->longitude }}" class="mt-1 w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500">
-        </div>
+        {{-- Latitude / Longitude (hidden) --}}
+        <input type="hidden" name="latitude" id="latitude" value="{{ $product->latitude }}">
+        <input type="hidden" name="longitude" id="longitude" value="{{ $product->longitude }}">
 
         <div class="text-center my-4">
             <button type="submit" class="btn btn-info px-4 py-2 rounded-lg">Modifier le produit</button>

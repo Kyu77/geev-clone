@@ -55,20 +55,16 @@
 
             {{-- Carte Leaflet --}}
             @if($product->latitude && $product->longitude)
-                <div id="map" style="height: 300px; width: 100%; margin-top: 2rem;"></div>
-
-                <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-                <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-                <script>
-                    var map = L.map('map').setView([{{ $product->latitude }}, {{ $product->longitude }}], 14);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '© OpenStreetMap contributors'
-                    }).addTo(map);
-                    L.marker([{{ $product->latitude }}, {{ $product->longitude }}]).addTo(map)
-                        .bindPopup("{{ $product->title }}")
-                        .openPopup();
-                </script>
+                <div id="map"
+                     style="height: 300px; width: 100%; margin-top: 2rem;"
+                     data-latitude="{{ $product->latitude }}"
+                     data-longitude="{{ $product->longitude }}"
+                     data-title="{{ $product->title }}">
+                </div>
+            @else
+                <div class="mt-4 p-4 bg-gray-100 rounded-lg text-center text-gray-600">
+                    <p>📍 Aucune localisation définie pour ce produit</p>
+                </div>
             @endif
 
         </div>
