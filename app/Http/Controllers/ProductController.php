@@ -33,8 +33,19 @@ class ProductController extends Controller
         if (!is_array($statutIds)) $statutIds = $statutIds ? [$statutIds] : [];
         $qualityIds = $request->query('quality', []);
         if (!is_array($qualityIds)) $qualityIds = $qualityIds ? [$qualityIds] : [];
+        $search = $request->query('search', '');
+
+        $userLat = $request->query('user_lat');
+        $userLng = $request->query('user_lng');
+        $radius = $request->query('radius', 10); // Default 10 km
 
         $products = Product::query()
+            ->when(!empty($search), function ($query) use ($search) {
+                return $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', '%' . $search . '%')
+                      ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            })
             ->when(!empty($categoryIds), function ($query) use ($categoryIds) {
                 return $query->whereIn('category_id', $categoryIds);
             })
@@ -44,9 +55,24 @@ class ProductController extends Controller
             ->when(!empty($qualityIds), function ($query) use ($qualityIds) {
                 return $query->whereIn('quality_id', $qualityIds);
             })
+            ->when($userLat && $userLng && $radius, function ($query) use ($userLat, $userLng, $radius) {
+                return $query->nearLocation($userLat, $userLng, $radius);
+            })
             ->with(['user', 'category', 'statut', 'quality'])
             ->orderBy('created_at', 'desc')
             ->paginate(6);
+
+        // Filter by distance if location params are provided
+        if ($userLat && $userLng && $radius) {
+            $products->getCollection()->transform(function ($product) use ($userLat, $userLng, $radius) {
+                if ($product->latitude && $product->longitude) {
+                    $distance = $product->getDistance($userLat, $userLng, $product->latitude, $product->longitude);
+                    $product->distance = $distance;
+                    return $distance <= $radius ? $product : null;
+                }
+                return null;
+            })->filter(); // Remove nulls
+        }
 
         // Fix statut attribute to be the related Statut object, not string
         foreach ($products as $product) {
@@ -57,7 +83,16 @@ class ProductController extends Controller
 
         $userCount = User::count();
 
-        return view('welcome', compact('products','categories', 'categoryIds', 'userCount', 'statuts', 'statutIds', 'qualities', 'qualityIds'));
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => $products->items(),
+                'pagination' => $products->links()->toHtml(),
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+            ]);
+        }
+
+        return view('welcome', compact('products','categories', 'categoryIds', 'userCount', 'statuts', 'statutIds', 'qualities', 'qualityIds', 'search', 'userLat', 'userLng', 'radius'));
     }
 
     public function show(Product $product)

@@ -12,10 +12,10 @@ Option de modifier les informations du profil.✅
 Historique des dons et des demandes.
 Création d'Annonces✅
 Formulaire pour créer une annonce (titre, description, catégorie, photos).✅
-Option de définir la localisation de l'objet.
+Option de définir la localisation de l'objet.✅
 Choix entre "don" ou "demande".
-Recherche et Filtrage
-Fonctionnalité de recherche par mots-clés.
+Recherche et Filtrage✅
+Fonctionnalité de recherche par mots-clés.✅
 Filtres par catégorie, localisation, et type d'annonce (don/demande).
 Tri par date, distance, ou popularité.
 Messagerie
